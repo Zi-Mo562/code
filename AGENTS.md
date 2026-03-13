@@ -249,3 +249,23 @@ Validation
 
 Suggested Commit Message  
 - one conventional commit message
+
+# Skill Selection
+
+When analyzing a repository:
+use skills/analyze_project.md
+
+When fixing bugs:
+use skills/bug_fix.md
+
+When reviewing code quality:
+use skills/code_review.md
+
+When improving code structure:
+use skills/refactor.md
+
+When creating tests:
+use skills/generate_tests.md
+
+When preparing a pull request:
+use skills/create_pr.md
