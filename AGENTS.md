@@ -1,39 +1,44 @@
 # AGENTS.md
 
-This file defines how the Codex agent should operate in this repository.
+This file defines how the Codex agent should behave when working in this repository.
 
 ---
 
 # Workspace
 
-The project root is:
+Project root:
 
 D:\code
 
-The agent may only read and modify files inside this directory.
+The agent may only read or modify files within this directory.
 
-Do not access files outside this workspace.
+Never access files outside the workspace.
 
 ---
 
-# Available Tools
+# Available MCP Tools
 
 The agent may use the following MCP tools:
 
 filesystem  
-- Read and modify project files
+- read project files
+- modify files
+- create files when necessary
 
 context7  
-- Look up real-world library usage and examples
+- search real-world library usage
+- retrieve modern example code
 
 openaiDocs  
-- Retrieve official OpenAI API documentation
+- retrieve official OpenAI API documentation
 
 playwright  
-- Perform browser automation and web inspection
+- browser automation
+- inspect webpages
+- capture screenshots
 
 github  
-- Assist with repository workflows
+- assist with repository workflows
 
 ---
 
@@ -41,17 +46,20 @@ github
 
 Before making any changes:
 
-1. Inspect the repository structure first.
+1. Inspect the repository structure.
 2. Identify the relevant files.
-3. Make minimal and targeted modifications.
-4. Prefer modifying existing files rather than creating new ones.
-5. Avoid large-scale refactors unless explicitly requested.
+3. Understand existing logic.
+4. Prefer minimal modifications.
 
 After making changes:
 
-- Clearly list modified files.
-- Explain the reason for the change.
-- Suggest validation steps.
+- Clearly list modified files
+- Explain the reason for the change
+- Suggest validation steps
+
+Avoid unnecessary refactoring.
+
+Prefer modifying existing files over creating new ones.
 
 ---
 
@@ -61,15 +69,16 @@ The repository uses Git for version control.
 
 When changes are made:
 
-1. Summarize modified files.
-2. Generate a clear commit message.
-3. Wait for user confirmation before committing.
+1. Summarize the modifications.
+2. List all changed files.
+3. Generate a commit message.
+4. Wait for user confirmation before committing.
 
 Do NOT automatically run:
 
 git commit
 
-unless explicitly instructed.
+unless the user explicitly asks for it.
 
 Prefer small, focused commits.
 
@@ -87,7 +96,7 @@ Examples:
 
 feat(api): add request validation  
 fix(parser): handle empty input case  
-docs(readme): update installation guide  
+docs(readme): improve installation instructions  
 refactor(core): simplify initialization logic  
 chore(repo): update dependencies  
 
@@ -106,14 +115,14 @@ chore
 
 If the repository is connected to GitHub:
 
-1. Suggest branch names before making large changes.
-2. Do not push changes automatically.
-3. Suggest pull request descriptions when appropriate.
+1. Suggest branch names before major changes
+2. Do not push automatically
+3. Suggest pull request descriptions when appropriate
 
 Example branch names:
 
 feature/add-auth-handler  
-fix/memory-leak-parser  
+fix/null-pointer-parser  
 docs/update-readme
 
 ---
@@ -129,34 +138,84 @@ git clean -fd
 git rebase -i  
 git push --force  
 
-Always confirm with the user before rewriting history.
+Always confirm before rewriting history.
 
 ---
 
-# Validation
+# Auto Dev Loop
 
-After modifying code:
+When solving problems, the agent should follow this engineering loop:
 
-1. Suggest how to validate the change.
-2. Provide exact commands when possible.
-3. Only run safe commands.
+1. Inspect repository structure
+2. Identify relevant files
+3. Apply minimal change
+4. Validate change
+5. If validation fails, analyze error
+6. Apply minimal follow-up fix
+7. Summarize final changes
+8. Suggest commit message
 
-Examples:
+Avoid endless loops.
 
-Python project  
+Stop after a reasonable number of attempts.
+
+---
+
+# Validation Policy
+
+The agent may run safe validation commands.
+
+Allowed examples:
+
+Python
+
 python main.py  
+pytest  
 
-Node project  
+Node.js
+
 npm install  
 npm test  
+npm run build  
 
-C++ project  
+C++
+
 g++ main.cpp -o main.exe  
 .\main.exe  
 
-If the project involves hardware (embedded systems):
+Prefer non-destructive commands.
 
-Do NOT attempt to flash firmware or interact with hardware automatically.
+Never run:
+
+deployment commands  
+database migrations  
+system configuration commands  
+
+without user confirmation.
+
+---
+
+# Project Type Rules
+
+Python projects:
+
+- prefer pytest validation
+
+Node projects:
+
+- prefer npm test or npm run build
+
+C++ projects:
+
+- use simple compile commands when possible
+- do not invent complex build systems
+
+Embedded / hardware projects:
+
+- do not attempt firmware flashing
+- do not interact with hardware
+- only modify source files
+- suggest manual validation
 
 ---
 
@@ -164,129 +223,29 @@ Do NOT attempt to flash firmware or interact with hardware automatically.
 
 Follow these principles:
 
-- Keep code simple and readable
-- Do not modify unrelated code
-- Preserve existing architecture
-- Add comments only when helpful
+- preserve project structure
+- keep changes minimal
+- avoid modifying unrelated code
+- write clear code
 
 When fixing bugs:
 
-Explain the root cause briefly.
+- explain root cause briefly
 
 ---
 
-# Agent Behavior
+# Completion Format
 
-The agent should behave as a cautious engineering assistant.
+After completing work, report in this format:
 
-Preferred workflow:
+Summary  
+- description of change
 
-Understand project  
-→ inspect files  
-→ implement minimal fix  
-→ summarize changes  
-→ propose commit message  
-→ suggest validation
+Modified Files  
+- list of files changed
 
-# Auto Dev Loop
+Validation  
+- command used or recommended
 
-The agent should follow an iterative engineering workflow whenever possible.
-
-Preferred loop:
-
-1. Inspect the repository structure
-2. Identify the relevant files
-3. Make a minimal, targeted change
-4. Validate the result with a safe command when possible
-5. If validation fails, inspect the error and apply a minimal follow-up fix
-6. Summarize the final changes
-7. Propose a commit message
-
----
-
-## Execution Policy
-
-The agent may run safe, local, non-destructive commands for validation.
-
-Allowed examples:
-
-- python main.py
-- pytest
-- npm test
-- npm run build
-- npx tsc --noEmit
-- g++ main.cpp -o main.exe
-- .\main.exe
-
-The agent should prefer read-only or validation-oriented commands.
-
-The agent must NOT automatically run:
-
-- deployment commands
-- flashing commands
-- production database commands
-- system configuration commands
-- destructive shell commands
-
----
-
-## Error Handling
-
-If a validation command fails:
-
-1. Read the error output carefully
-2. Explain the likely root cause briefly
-3. Apply the smallest reasonable fix
-4. Re-run validation if safe
-5. Stop after a reasonable number of attempts and report status clearly
-
-Do not loop endlessly.
-
----
-
-## Change Scope Rules
-
-When implementing fixes:
-
-- prefer the smallest viable change
-- avoid rewriting unrelated modules
-- preserve existing structure and naming
-- avoid creating new files unless necessary
-
-For larger refactors, explain the plan before editing.
-
----
-
-## Completion Format
-
-After completing a task, report in this format:
-
-### Summary
-- what was changed
-- why it was changed
-
-### Modified Files
-- list of modified files
-
-### Validation
-- command run, or command recommended
-- whether validation passed or failed
-
-### Suggested Commit Message
+Suggested Commit Message  
 - one conventional commit message
-
-## Project-Type Rules
-
-For Python projects:
-- prefer python and pytest based validation
-
-For Node.js projects:
-- prefer npm test, npm run build, or npm run lint
-
-For C++ projects:
-- use simple local compile commands when the build process is obvious
-- avoid inventing complex build systems unless already present
-
-For embedded or hardware-related projects:
-- do not attempt flashing, hardware communication, or device control
-- only modify source files and describe manual validation steps
