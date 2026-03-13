@@ -1,0 +1,10 @@
+node_modules/
+dist/
+build/
+*.log
+*.exe
+*.obj
+*.o
+*.out
+.vscode/
+__pycache__/
