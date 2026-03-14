@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+
+# C / C++
+*.exe
+*.out
+*.obj
+
+# Java
+*.class
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
