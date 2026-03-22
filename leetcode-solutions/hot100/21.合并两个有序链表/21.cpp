@@ -1,13 +1,17 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+struct ListNode {
+    int val;
+    ListNode* next;
+
+    ListNode() : val(0), next(nullptr) {}
+    ListNode(int x) : val(x), next(nullptr) {}
+    ListNode(int x, ListNode* nextNode) : val(x), next(nextNode) {}
+};
+
 class Solution {
 public:
     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
@@ -29,3 +33,55 @@ public:
         return dummy.next;
     }
 };
+
+ListNode* buildList(const vector<int>& nums) {
+    ListNode dummy(0);
+    ListNode* tail = &dummy;
+
+    for (int num : nums) {
+        tail->next = new ListNode(num);
+        tail = tail->next;
+    }
+
+    return dummy.next;
+}
+
+void printList(ListNode* head) {
+    bool first = true;
+    while (head != nullptr) {
+        if (!first) {
+            cout << " ";
+        }
+        cout << head->val;
+        first = false;
+        head = head->next;
+    }
+    cout << '\n';
+}
+
+int main() {
+    ios::sync_with_stdio(false);
+    cin.tie(nullptr);
+
+    int n, m;
+    cin >> n >> m;
+
+    vector<int> nums1(n);
+    vector<int> nums2(m);
+
+    for (int i = 0; i < n; ++i) {
+        cin >> nums1[i];
+    }
+    for (int i = 0; i < m; ++i) {
+        cin >> nums2[i];
+    }
+
+    ListNode* list1 = buildList(nums1);
+    ListNode* list2 = buildList(nums2);
+
+    Solution solution;
+    ListNode* merged = solution.mergeTwoLists(list1, list2);
+    printList(merged);
+
+    return 0;
+}
